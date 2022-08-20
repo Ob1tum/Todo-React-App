@@ -1,26 +1,35 @@
 import React from 'react';
 
 class Task extends React.Component {
-  onLabelClick = () => {
-    console.log(`Clicked: ${this.props.label}`);
-  };
-
   render() {
-    const { label, taskClass, id } = this.props;
+    let classNames = 'todo-list-item';
+    const { label, onDeleted, onToggleCompleted, completed, taskClass, id } =
+      this.props;
+    if (completed) {
+      classNames += ' completed';
+    }
+
     return (
-      <li className={taskClass}>
+      <li className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox" />
+          <input
+            className="toggle"
+            type="checkbox"
+            onClick={onToggleCompleted}
+          />
           <label>
-            <span className="description" onClick={this.onLabelClick}>
-              {label}
-            </span>
+            <span className="description">{label}</span>
             <span className="created">created 17 seconds ago</span>
           </label>
-          <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
+          <button
+            className="icon icon-edit"
+            onClick={() => {
+              alert('Потом сделаю)');
+            }}
+          ></button>
+          <button className="icon icon-destroy" onClick={onDeleted}></button>
         </div>
-        <input type="text" className="edit" defaultValue={label} />
+        {/* <input type="text" className="edit" defaultValue={label} /> */}
       </li>
     );
   }
