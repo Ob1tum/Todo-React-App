@@ -5,14 +5,10 @@ export default class Footer extends React.Component {
     { name: 'all', label: 'All' },
     { name: 'active', label: 'Active' },
     { name: 'completed', label: 'Completed' },
-    {
-      name: 'clear completed',
-      label: 'Clear completed',
-    },
   ];
 
   render() {
-    const { leftItems, filter, onFilterChange } = this.props;
+    const { leftItems, filter, onFilterChange, deleteCompleted } = this.props;
     const buttons = this.buttons.map(({ name, label }) => {
       const isActive = filter === name;
       //написать стиль Active
@@ -34,6 +30,9 @@ export default class Footer extends React.Component {
         <span className="todo-count">{leftItems} items left</span>
         {/*написать другие стили на последнюю кнопку)*/}
         <ul className="filters">{buttons}</ul>
+        <button className="clear-completed" onClick={() => deleteCompleted()}>
+          Clear completed
+        </button>
       </footer>
     );
   }

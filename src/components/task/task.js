@@ -1,31 +1,87 @@
+import { findAllByTestId } from '@testing-library/react';
 import React from 'react';
 
 class Task extends React.Component {
+  state = {
+    label: '',
+    classEdit: '',
+    id: '',
+  };
+  onLabelChange = (e) => {
+    this.setState({
+      label: e.target.value,
+    });
+  };
+  onSubmit = (e) => {
+    // e.preventDefault();
+    // console.log('edit:', this.state.label, this.props.id);
+    // this.props.editItem(this.state.label, this.props.id);
+    // this.props.onToggleEditing();
+    e.preventDefault();
+    if (this.state.label === '') {
+      this.props.onToggleEditing();
+    } else {
+      this.props.editItem(this.state.label, this.props.id);
+    }
+
+    // this.setState({
+    //   label: '',
+    // });
+
+    // this.props.onToggleEditing();
+  };
   render() {
     let classNames = 'todo-list-item';
-    const { label, onDeleted, onToggleCompleted, completed, taskClass, id } =
-      this.props;
+    let isChecked = false;
+    let classEdit = 'edit';
+    let isEditing = false;
+    const {
+      label,
+      onDeleted,
+      onToggleCompleted,
+      onToggleEditing,
+      completed,
+      editing,
+      onEdit,
+      id,
+    } = this.props;
     if (completed) {
       classNames += ' completed';
+      isChecked = true;
+    }
+    if (editing) {
+      classEdit += 'editing';
+      isEditing = true;
     }
 
     return (
       <li className={classNames}>
         <div className="view">
+          <form onSubmit={this.onSubmit}>
+            <input
+              type="text"
+              className={classEdit}
+              defaultValue={label}
+              onChange={this.onLabelChange}
+            />
+          </form>
           <input
             className="toggle"
             type="checkbox"
+            defaultChecked={isChecked}
             onClick={onToggleCompleted}
           />
+
           <label>
             <span className="description">{label}</span>
             <span className="created">created 17 seconds ago</span>
           </label>
           <button
             className="icon icon-edit"
-            onClick={() => {
-              alert('Потом сделаю)');
-            }}
+            onClick={onToggleEditing}
+            // onClick={() => {
+            //   classEdit = 'edittt';
+            // }}
           ></button>
           <button className="icon icon-destroy" onClick={onDeleted}></button>
         </div>

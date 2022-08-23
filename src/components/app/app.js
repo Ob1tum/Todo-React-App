@@ -13,14 +13,14 @@ class App extends React.Component {
       this.createTodoItem('Active task'),
     ],
     term: '',
-    filter: 'all',
+    filter: '',
   };
 
   createTodoItem(label) {
     return {
       label,
-      taskClass: '',
       completed: false,
+      editing: false,
       id: this.maxId++,
     };
   }
@@ -37,15 +37,34 @@ class App extends React.Component {
     });
   };
 
-  addItem = (text) => {
-    const newItem = this.createTodoItem(text);
+  addItem = (text, id) => {
+    if (id) {
+      this.setState(({ todoData }) => {
+        const newItem = this.createTodoItem(text);
+        const idx = todoData.findIndex((el) => el.id === id);
+        const newwrray = [
+          ...todoData.slice(0, idx),
+          newItem,
+          ...todoData.slice(idx + 1),
+        ];
 
-    this.setState(({ todoData }) => {
-      const newArr = [...todoData, newItem];
-      return {
-        todoData: newArr,
-      };
-    });
+        return {
+          todoData: newwrray,
+        };
+      });
+    } else {
+      const newItem = this.createTodoItem(text);
+      this.setState(({ todoData }) => {
+        const newArr = [...todoData, newItem];
+        return {
+          todoData: newArr,
+        };
+      });
+    }
+  };
+
+  editItem = (text, id) => {
+    this.addItem(text, id);
   };
 
   onToggleCompleted = (id) => {
@@ -60,6 +79,25 @@ class App extends React.Component {
         newItem,
         ...todoData.slice(idx + 1),
       ];
+
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+  onToggleEditing = (id) => {
+    this.setState(({ todoData }) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+
+      const oldItem = todoData[idx];
+      const newItem = { ...oldItem, editing: !oldItem.editing };
+
+      const newArray = [
+        ...todoData.slice(0, idx),
+        newItem,
+        ...todoData.slice(idx + 1),
+      ];
+
       return {
         todoData: newArray,
       };
@@ -75,31 +113,21 @@ class App extends React.Component {
       return items.filter((item) => item.done);
     }
   }
-
-  onSearchChange = (term) => {
-    this.setState({ term });
+  edit = (id) => {
+    console.log('Editing task: ', id);
   };
+
   onFilterChange = (filter) => {
     this.setState({ filter });
   };
-
-  // searchItems(items, search) {
-  //   if (search.length === 0) {
-  //     return items;
-  //   }
-
-  //   return items.filter((item) => {
-  //     return item.label.toLowerCase().indexOf(search.toLowerCase()) > -1;
-  //   });
-  // }
-  search(items, term) {
-    if (term.length === 0) {
-      return items;
-    }
-    return items.filter((item) => {
-      return item.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+  deleteCompleted = () => {
+    this.setState(({ todoData }) => {
+      const compArr = todoData.filter((el) => el.completed === false);
+      return {
+        todoData: compArr,
+      };
     });
-  }
+  };
   filter(items, filter) {
     switch (filter) {
       case 'all':
@@ -116,25 +144,27 @@ class App extends React.Component {
   render() {
     const { todoData, term, filter } = this.state;
 
-    const visibleItems = this.filter(this.search(todoData, term), filter);
+    const visibleItems = this.filter(todoData, filter);
     const unCompletedCount = todoData.filter((el) => !el.completed).length;
 
     return (
       <section className="todoapp">
-        <AppHeader
-          onItemAdded={this.addItem}
-          onSearchChange={this.onSearchChange}
-        />
+        <AppHeader onItemAdded={this.addItem} />
         <TaskList
           todos={visibleItems}
           onDeleted={this.deleteItem}
           onToggleCompleted={this.onToggleCompleted}
+          editItem={this.editItem}
+          onEdit={this.edit}
+          onToggleEditing={this.onToggleEditing}
+          onItemAdded={this.addItem}
         />
         <Footer
           onItemAdded={this.addItem}
           leftItems={unCompletedCount}
           filter={filter}
           onFilterChange={this.onFilterChange}
+          deleteCompleted={this.deleteCompleted}
         />
       </section>
     );
