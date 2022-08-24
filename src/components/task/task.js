@@ -1,6 +1,7 @@
 import { findAllByTestId } from '@testing-library/react';
 import React from 'react';
-
+import { formatDistance, formatDistanceToNow } from 'date-fns';
+import './task.css';
 class Task extends React.Component {
   state = {
     label: '',
@@ -50,10 +51,12 @@ class Task extends React.Component {
       isChecked = true;
     }
     if (editing) {
-      classEdit += 'editing';
+      classEdit = 'editing';
       isEditing = true;
     }
-
+    const currentDate = new Date();
+    const createDate = new Date(); // тут дата создания
+    let creationTime = formatDistanceToNow(currentDate);
     return (
       <li className={classNames}>
         <div className="view">
@@ -74,7 +77,7 @@ class Task extends React.Component {
 
           <label>
             <span className="description">{label}</span>
-            <span className="created">created 17 seconds ago</span>
+            <span className="created">{creationTime}</span>
           </label>
           <button
             className="icon icon-edit"

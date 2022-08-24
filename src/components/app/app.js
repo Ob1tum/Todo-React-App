@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import AppHeader from '../app-header';
 import TaskList from '../task-list';
 import Footer from '../footer';
-
+import './app.css';
 class App extends React.Component {
   maxId = 100;
   state = {
