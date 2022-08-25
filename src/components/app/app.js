@@ -22,6 +22,7 @@ class App extends React.Component {
       completed: false,
       editing: false,
       id: this.maxId++,
+      date: new Date(),
     };
   }
 
@@ -113,9 +114,6 @@ class App extends React.Component {
       return items.filter((item) => item.done);
     }
   }
-  edit = (id) => {
-    console.log('Editing task: ', id);
-  };
 
   onFilterChange = (filter) => {
     this.setState({ filter });
@@ -155,14 +153,11 @@ class App extends React.Component {
           onDeleted={this.deleteItem}
           onToggleCompleted={this.onToggleCompleted}
           editItem={this.editItem}
-          onEdit={this.edit}
           onToggleEditing={this.onToggleEditing}
           onItemAdded={this.addItem}
         />
         <Footer
-          onItemAdded={this.addItem}
           leftItems={unCompletedCount}
-          filter={filter}
           onFilterChange={this.onFilterChange}
           deleteCompleted={this.deleteCompleted}
         />

@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import PropTypes from 'prop-types';
 import './app-header.css';
 class AppHeader extends React.Component {
+  static defaultProps = {
+    addItem: 'New Task',
+  };
+  static propTypes = {
+    addItem: PropTypes.string,
+  };
   state = {
     label: '',
-    term: '',
   };
   onLabelChange = (e) => {
     this.setState({

@@ -1,36 +1,39 @@
-import { findAllByTestId } from '@testing-library/react';
 import React from 'react';
-import { formatDistance, formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
+import PropTypes from 'prop-types';
 import './task.css';
 class Task extends React.Component {
+  static defaultProps = {
+    deleteItem: () => {},
+    onToggleCompleted: () => {},
+    editItem: () => {},
+    onToggleEditing: () => {},
+    addItem: 'New Task',
+  };
+  static propTypes = {
+    addItem: PropTypes.string,
+  };
   state = {
     label: '',
     classEdit: '',
     id: '',
   };
+
   onLabelChange = (e) => {
     this.setState({
       label: e.target.value,
     });
   };
+
   onSubmit = (e) => {
-    // e.preventDefault();
-    // console.log('edit:', this.state.label, this.props.id);
-    // this.props.editItem(this.state.label, this.props.id);
-    // this.props.onToggleEditing();
     e.preventDefault();
     if (this.state.label === '') {
       this.props.onToggleEditing();
     } else {
       this.props.editItem(this.state.label, this.props.id);
     }
-
-    // this.setState({
-    //   label: '',
-    // });
-
-    // this.props.onToggleEditing();
   };
+
   render() {
     let classNames = 'todo-list-item';
     let isChecked = false;
@@ -43,8 +46,6 @@ class Task extends React.Component {
       onToggleEditing,
       completed,
       editing,
-      onEdit,
-      id,
     } = this.props;
     if (completed) {
       classNames += ' completed';
@@ -54,9 +55,7 @@ class Task extends React.Component {
       classEdit = 'editing';
       isEditing = true;
     }
-    const currentDate = new Date();
-    const createDate = new Date(); // тут дата создания
-    let creationTime = formatDistanceToNow(currentDate);
+
     return (
       <li className={classNames}>
         <div className="view">
@@ -74,21 +73,15 @@ class Task extends React.Component {
             defaultChecked={isChecked}
             onClick={onToggleCompleted}
           />
-
           <label>
             <span className="description">{label}</span>
-            <span className="created">{creationTime}</span>
+            <span className="created">{`created ${formatDistanceToNow(
+              this.props.date
+            )} ago`}</span>
           </label>
-          <button
-            className="icon icon-edit"
-            onClick={onToggleEditing}
-            // onClick={() => {
-            //   classEdit = 'edittt';
-            // }}
-          ></button>
+          <button className="icon icon-edit" onClick={onToggleEditing}></button>
           <button className="icon icon-destroy" onClick={onDeleted}></button>
         </div>
-        {/* <input type="text" className="edit" defaultValue={label} /> */}
       </li>
     );
   }

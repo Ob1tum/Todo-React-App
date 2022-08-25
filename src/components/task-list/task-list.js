@@ -7,7 +7,6 @@ const TaskList = ({
   onToggleCompleted,
   onToggleEditing,
   editItem,
-  onEdit,
   onItemAdded,
 }) => {
   const elements = todos.map((item) => {

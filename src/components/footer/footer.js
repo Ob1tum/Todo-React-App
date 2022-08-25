@@ -1,6 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './footer.css';
 export default class Footer extends React.Component {
+  static defaultProps = {
+    leftItems: 0,
+    onFilterChange: 'all',
+    deleteCompleted: () => {},
+  };
+  static propTypes = {
+    leftItems: PropTypes.number,
+    onFilterChange: PropTypes.string,
+  };
   buttons = [
     { name: 'all', label: 'All' },
     { name: 'active', label: 'Active' },
@@ -8,18 +18,11 @@ export default class Footer extends React.Component {
   ];
 
   render() {
-    const { leftItems, filter, onFilterChange, deleteCompleted } = this.props;
+    const { leftItems, onFilterChange, deleteCompleted } = this.props;
     const buttons = this.buttons.map(({ name, label }) => {
-      const isActive = filter === name;
-      //написать стиль Active
-      const clazz = isActive ? 'active' : '';
       return (
         <li key={name}>
-          <button
-            className={clazz}
-            key={name}
-            onClick={() => onFilterChange(name)}
-          >
+          <button key={name} onClick={() => onFilterChange(name)}>
             {label}
           </button>
         </li>
@@ -28,7 +31,6 @@ export default class Footer extends React.Component {
     return (
       <footer className="footer">
         <span className="todo-count">{leftItems} items left</span>
-        {/*написать другие стили на последнюю кнопку)*/}
         <ul className="filters">{buttons}</ul>
         <button className="clear-completed" onClick={() => deleteCompleted()}>
           Clear completed
