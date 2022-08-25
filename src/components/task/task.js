@@ -11,6 +11,10 @@ class Task extends React.Component {
     addItem: 'New Task',
   };
   static propTypes = {
+    deleteItem: PropTypes.func,
+    onToggleCompleted: PropTypes.func,
+    editItem: PropTypes.func,
+    onToggleEditing: PropTypes.func,
     addItem: PropTypes.string,
   };
   state = {

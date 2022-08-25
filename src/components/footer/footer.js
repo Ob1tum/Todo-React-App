@@ -9,7 +9,8 @@ export default class Footer extends React.Component {
   };
   static propTypes = {
     leftItems: PropTypes.number,
-    onFilterChange: PropTypes.string,
+    onFilterChange: PropTypes.func,
+    deleteCompleted: PropTypes.func,
   };
   buttons = [
     { name: 'all', label: 'All' },
