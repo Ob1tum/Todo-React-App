@@ -1,5 +1,6 @@
-import React from 'react';
-import Task from '../task';
+import React from "react";
+
+import Task from "../task";
 
 const TaskList = ({
   todos,

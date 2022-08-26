@@ -2,25 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './footer.css';
 export default class Footer extends React.Component {
-  static defaultProps = {
-    leftItems: 0,
-    onFilterChange: 'all',
-    deleteCompleted: () => {},
-  };
-  static propTypes = {
-    leftItems: PropTypes.number,
-    onFilterChange: PropTypes.func,
-    deleteCompleted: PropTypes.func,
-  };
-  buttons = [
-    { name: 'all', label: 'All' },
-    { name: 'active', label: 'Active' },
-    { name: 'completed', label: 'Completed' },
-  ];
-
   render() {
     const { leftItems, onFilterChange, deleteCompleted } = this.props;
-    const buttons = this.buttons.map(({ name, label }) => {
+    const buttons = Footer.buttons.map(({ name, label }) => {
       return (
         <li key={name}>
           <button key={name} onClick={() => onFilterChange(name)}>
@@ -40,3 +24,18 @@ export default class Footer extends React.Component {
     );
   }
 }
+Footer.buttons = [
+  { name: 'all', label: 'All' },
+  { name: 'active', label: 'Active' },
+  { name: 'completed', label: 'Completed' },
+];
+Footer.defaultProps = {
+  leftItems: 0,
+  onFilterChange: 'all',
+  deleteCompleted: () => {},
+};
+Footer.propTypes = {
+  leftItems: PropTypes.number,
+  onFilterChange: PropTypes.func,
+  deleteCompleted: PropTypes.func,
+};
