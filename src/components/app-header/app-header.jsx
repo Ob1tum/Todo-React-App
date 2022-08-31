@@ -3,24 +3,24 @@ import PropTypes from 'prop-types';
 
 import './app-header.css';
 class AppHeader extends React.Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       label: '',
     };
-    this.onLabelChange = (e) => {
-      this.setState({
-        label: e.target.value,
-      });
-    };
-    this.onSubmit = (e) => {
-      e.preventDefault();
-      this.props.onItemAdded(this.state.label);
-      this.setState({
-        label: '',
-      });
-    };
   }
+  onLabelChange = (e) => {
+    this.setState({
+      label: e.target.value,
+    });
+  };
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.onItemAdded(this.state.label);
+    this.setState({
+      label: '',
+    });
+  };
   render() {
     return (
       <header className="header">

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './footer.css';
-export default class Footer extends React.Component {
-  render() {
-    const { leftItems, onFilterChange, deleteCompleted } = this.props;
+
+const Footer = ({ leftItems, onFilterChange, deleteCompleted }) => {
+  
     const buttons = Footer.buttons.map(({ name, label }) => {
       return (
         <li key={name}>
@@ -23,7 +23,7 @@ export default class Footer extends React.Component {
       </footer>
     );
   }
-}
+
 Footer.buttons = [
   { name: 'all', label: 'All' },
   { name: 'active', label: 'Active' },
@@ -39,3 +39,5 @@ Footer.propTypes = {
   onFilterChange: PropTypes.func,
   deleteCompleted: PropTypes.func,
 };
+
+export default Footer
